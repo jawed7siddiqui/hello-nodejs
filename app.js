@@ -27,7 +27,7 @@ const checkDbConnection = (callback) => {
       callback(err);
     } else {
       connection.query('SELECT 1 + 1 AS result', (error, results) => {
-        connection.end(); // Close the connection
+        // connection.end(); // Close the connection
         if (error) {
           callback(error);
         } else {
