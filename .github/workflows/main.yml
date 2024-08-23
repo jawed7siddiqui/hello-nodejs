@@ -27,7 +27,7 @@ jobs:
     - name: Deploy to VPS
       uses: appleboy/ssh-action@master
       with:
-        host: "13.201.77.15"
+        host: "15.206.111.194"
         username: "ubuntu"
         key: |
           -----BEGIN RSA PRIVATE KEY-----
