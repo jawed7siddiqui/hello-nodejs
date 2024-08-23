@@ -1,15 +1,51 @@
-// app.js
-const http = require('http');
+// server.js
+const express = require('express');
+const mysql = require('mysql2');
+const app = express();
+const port = 3000; // You can use any port you prefer
 
-const hostname = '127.0.0.1';
-const port = 3000;
+// MySQL connection configuration
+const dbConfig = {
+  host: 'database-1.crwwqk02ennr.ap-south-1.rds.amazonaws.com',
+  port: 3306,
+  user: 'admin',
+  password: 'EAN90jI8FLMwi5i3',
+  database: 'your_database_name' // Replace with your actual database name
+};
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, World 2!\n');
+// Create a MySQL connection
+const connection = mysql.createConnection(dbConfig);
+
+// Function to check database connection
+const checkDbConnection = (callback) => {
+  connection.connect((err) => {
+    if (err) {
+      callback(err);
+    } else {
+      connection.query('SELECT 1 + 1 AS result', (error, results) => {
+        connection.end(); // Close the connection
+        if (error) {
+          callback(error);
+        } else {
+          callback(null, results);
+        }
+      });
+    }
+  });
+};
+
+// Define an API endpoint to check DB connection
+app.get('/api/check-db', (req, res) => {
+  checkDbConnection((err, results) => {
+    if (err) {
+      res.status(500).json({ success: false, message: 'Database connection failed', error: err.message });
+    } else {
+      res.status(200).json({ success: true, message: 'Database is connected', result: results[0].result });
+    }
+  });
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+// Start the server
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
