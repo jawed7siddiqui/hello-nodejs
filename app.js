@@ -1,8 +1,9 @@
 // server.js
 const express = require('express');
 const mysql = require('mysql2');
+const cors = require('cors'); // Import cors
 const app = express();
-const port = 3000; // You can use any port you prefer
+const port = 3000;
 
 // MySQL connection configuration
 const dbConfig = {
@@ -10,11 +11,14 @@ const dbConfig = {
   port: 3306,
   user: 'admin',
   password: 'EAN90jI8FLMwi5i3',
-  database: 'test_db' // Replace with your actual database name
+  database: 'test_db'
 };
 
 // Create a MySQL connection
 const connection = mysql.createConnection(dbConfig);
+
+// Use cors middleware
+app.use(cors());
 
 // Function to check database connection
 const checkDbConnection = (callback) => {
@@ -40,7 +44,7 @@ app.get('/api/check-db', (req, res) => {
     if (err) {
       res.status(500).json({ success: false, message: 'Database connection failed', error: err.message });
     } else {
-      res.status(200).json({ success: true, message: 'Database is connected', result: results[0].result });
+      res.status(200).json({ success: true, message: 'RDS MySQL Database is connected', result: results[0].result });
     }
   });
 });
