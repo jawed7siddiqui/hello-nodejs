@@ -10,7 +10,7 @@ const dbConfig = {
   port: 3306,
   user: 'admin',
   password: 'EAN90jI8FLMwi5i3',
-  database: 'your_database_name' // Replace with your actual database name
+  database: 'test_db' // Replace with your actual database name
 };
 
 // Create a MySQL connection
